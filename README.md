@@ -14,5 +14,5 @@ Original Image        /        Our Results        /        UIEB Reference
 
 ### 复合退化单步处理
 输入含有复合退化的水下图像，每次处理单一退化，low->blur->haze,最后一幅为 UIEB 参考图像。
-![](
+![](image.png)
 
