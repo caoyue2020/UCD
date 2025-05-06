@@ -18,31 +18,33 @@ Original Image        /        Our Results        /        UIEB Reference
 
 ### 合成方法
 #### 偏色预处理
-![image](https://cdn.nlark.com/yuque/__latex/eeb43c6ee8b7ea44b5c6dc50b6c72526.svg)
+$ I_{transfer} = \frac{I_{in} - \text{mean}(I_{in})}{\text{std}(I_{in})} \times \text{std}(I_{temp}) + \text{mean}(I_{temp})  $
 
-![image](https://cdn.nlark.com/yuque/__latex/1e83eafefdea9779f7af4a52876dc198.svg)
+$ \hat{I} = I\times (1-\gamma) + I_{transfer} \times \gamma $
 
-其中![image](https://cdn.nlark.com/yuque/__latex/ad7445a4870af88fc0d3893611ae93dd.svg)表示随机选取的偏色模板。该操作对原始干净的陆上自然图像增加蓝绿偏色以更好的模拟水下自然环境。当前![image](https://cdn.nlark.com/yuque/__latex/4aa418d6f0b6fbada90489b4374752e5.svg)设为 0.3。
+其中$ I_{temp} $表示随机选取的偏色模板。该操作对原始干净的陆上自然图像增加蓝绿偏色以更好的模拟水下自然环境。当前$ \gamma $设为 0.3。
 
 #### Blur
-![image](https://cdn.nlark.com/yuque/__latex/3d0541dfac079c76487e59ae998f64d8.svg)
+$ \hat{I}_{blur} =\hat{I}\times \alpha + \mathcal{G} (\hat{I}) \times (1-\alpha) \\
+\alpha = e^{-\beta d(x)} $
 
-其中![image](https://cdn.nlark.com/yuque/__latex/742feea1e00938322008014d1e5b27d2.svg)表示多尺度高斯模糊，![image](https://cdn.nlark.com/yuque/__latex/52f99e4a24c52b13fb462fa108545c10.svg),![image](https://cdn.nlark.com/yuque/__latex/9a17313a5d24383eca69ac68f594454d.svg)为重映射到 ![image](https://cdn.nlark.com/yuque/__latex/a219921b2927d1536a49a978f2120aae.svg)的深度图
+其中$ \mathcal{G} $表示多尺度高斯模糊，$ \beta \in [1,3] $,$ d(x) $为重映射到 $ [0.3,0.7] $的深度图
 
 #### Haze
-![image](https://cdn.nlark.com/yuque/__latex/5ead04de30be777761a0c7fe91f978e7.svg)
+$ \hat{I}_{haze}=\hat{I} \times t + A(1-t)\\
+t = e^{-\beta d(x)}   $
 
-其中，![image](https://cdn.nlark.com/yuque/__latex/9f24e890d6813efd24240a87fe8cb6fb.svg)，![image](https://cdn.nlark.com/yuque/__latex/9a17313a5d24383eca69ac68f594454d.svg)为重映射到![image](https://cdn.nlark.com/yuque/__latex/a219921b2927d1536a49a978f2120aae.svg)的深度图。![image](https://cdn.nlark.com/yuque/__latex/de951302f41d4707b9d80ca1af34dd0f.svg)为亮度最亮区域（10%）的平均亮度。注意![image](https://cdn.nlark.com/yuque/__latex/6100158802e722a88c15efc101fc275b.svg)和![image](https://cdn.nlark.com/yuque/__latex/de951302f41d4707b9d80ca1af34dd0f.svg)三通道等量。
+其中，$ \beta \in [1,3]  $，$ d(x) $为重映射到$ [0.3,0.7] $的深度图。$ A $为亮度最亮区域（10%）的平均亮度。注意$ \beta $和$ A $三通道等量。
 
 #### low
-![image](https://cdn.nlark.com/yuque/__latex/340b14faf4489528f968fcb4984521fc.svg)
+$ \hat{I}_{low} = \frac{\hat{I}}{L}L^{\theta} $
 
-其中，![image](https://cdn.nlark.com/yuque/__latex/654c6f219b5d0964021bd64a05d4e79c.svg)，![image](https://cdn.nlark.com/yuque/__latex/c895173d3be4872abf206be4268a58cb.svg)为灰度图
+其中，$ \theta \in [1.5,2.5] $，$ L $为灰度图
 
 #### 偏色
-![image](https://cdn.nlark.com/yuque/__latex/4aa5dca555d82d52b852bfa88dd13286.svg)
+$ \hat{I}_{cast} = \hat{I}\times (1-\gamma_2) + I_{transfer} \times \gamma_2 $
 
-目前![image](https://cdn.nlark.com/yuque/__latex/13d1ef28e4ebbb24aebfafeee1049d53.svg),即![image](https://cdn.nlark.com/yuque/__latex/cc59974adfd4f4a3a9ebe3624edb92cd.svg)就是![image](https://cdn.nlark.com/yuque/__latex/5bc9388a3806aca44a50eb8acbf4817d.svg)
+目前$ \gamma_2=1 $,即$ I_{transfer} $就是$ \hat{I}_{cast} $
 
 ### 训练流程
 1. 随机读取一幅干净的图像
