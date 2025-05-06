@@ -1,3 +1,9 @@
+# UCD数据集
+
+### 复合退化单步处理
+输入含有复合退化的水下图像，每次处理单一退化，low->blur->haze，最后一幅为 UIEB 参考图像。
+![](image.png)
+
 ### 合成数据集训练的模型增强结果与 UIEB 参考图像的对比
 Original Image        /        Our Results        /        UIEB Reference
 
@@ -11,8 +17,4 @@ Original Image        /        Our Results        /        UIEB Reference
 
 ![](https://cdn.nlark.com/yuque/0/2025/png/36204023/1743004916405-3701d97f-7838-47ee-ab35-bfd2ae8961c4.png)
 
-
-### 复合退化单步处理
-输入含有复合退化的水下图像，每次处理单一退化，low->blur->haze，最后一幅为 UIEB 参考图像。
-![](image.png)
 
